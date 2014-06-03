@@ -1,0 +1,28 @@
+{
+  "name": "<%= _(projectName).trim().slugify() %>",
+  "version": "0.0.0",
+  "description": "<%= _(projectDescription).trim() %>",
+  "repository": {
+  	"type": "git",
+  	"url": "<%= _(projectGitRepoUrl).trim() %>"
+	},
+	"scripts": {
+		"test": "grunt"
+	},
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "q": "^1.0.1"
+	},
+	"devDependencies": {
+    "mocha": "^1.20.0",
+    "istanbul": "^0.2.10",
+    "sinon": "^1.10.2",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-jscs-checker": "^0.4.4",
+    "grunt-mocha-test": "^0.11.0",
+    "grunt-istanbul-coverage": "0.0.5"
+	}
+}
