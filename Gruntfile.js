@@ -5,8 +5,6 @@ module.exports = function (grunt) {
 	var allFiles    = sourceFiles.concat(testFiles);
 
 	grunt.initConfig({
-		pkg : grunt.file.readJSON("package.json"),
-
 		jscs : {
 			src     : allFiles,
 			options : {
@@ -26,14 +24,11 @@ module.exports = function (grunt) {
 				},
 				src     : testFiles
 			}
-		},
-
-		clean : [ "test/temp" ]
+		}
 	});
 
 	// Load plugins
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-jscs-checker");
 	grunt.loadNpmTasks("grunt-mocha-test");
 
@@ -42,6 +37,6 @@ module.exports = function (grunt) {
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
 	grunt.registerTask("test", "Run the test suite.", [ "mochaTest" ]);
 
-	grunt.registerTask("default", [ "clean", "lint", "style", "test" ]);
+	grunt.registerTask("default", [ "lint", "style", "test" ]);
 
 };

@@ -54,6 +54,7 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 		this.mkdir("coverage");
 
 		this.copy("gitignore", ".gitignore");
+		this.copy("gitattributes", ".gitattributes");
 		this.copy("jshint.json", ".jshint.json");
 		this.copy("jscs.json", ".jscs.json");
 		this.copy("travis.yml", ".travis.yml");

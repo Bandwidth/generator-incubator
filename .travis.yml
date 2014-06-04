@@ -6,8 +6,6 @@ before_install:
   - npm config set registry https://npm.bwrnd.com
   - npm config set always-auth true
   - echo -ne "${NPM_USER}\n${NPM_PASS}\n${NPM_EMAIL}\n" | npm login
-  - currentfolder=${PWD##*/}
-  - if [ "$currentfolder" != "generator-incubator" ]; then cd .. && eval "mv $currentfolder generator-incubator" && cd generator-incubator; fi
 env:
   global:
     # NPM_PASS

@@ -5,8 +5,6 @@ module.exports = function (grunt) {
 	var allFiles    = sourceFiles.concat(testFiles);
 
 	grunt.initConfig({
-		pkg : grunt.file.readJSON("package.json"),
-
 		jscs : {
 			src     : allFiles,
 			options : {

@@ -1,19 +1,33 @@
-/*global describe, beforeEach, it */
-var path = require("path");
 var helpers = require("yeoman-generator").test;
+var rimraf  = require("rimraf");
+var assert = require("assert");
+var path    = require("path");
 
 describe("incubator generator", function () {
+	var testDirectory = path.join(__dirname, "temp");
+	var app;
+
 	beforeEach(function (done) {
-		helpers.testDirectory(path.join(__dirname, "temp"), function (err) {
+		helpers.testDirectory(testDirectory, function (err) {
 			if (err) {
 				return done(err);
 			}
 
-			this.app = helpers.createGenerator("incubator:app", [
+			app = helpers.createGenerator("incubator:app", [
 				"../../app"
 			]);
+
 			done();
-		}.bind(this));
+		});
+	});
+
+	afterEach(function (done) {
+		rimraf(testDirectory, done);
+	});
+
+	it("can be imported without blowing up", function () {
+		var app = require("../app");
+		assert(app !== undefined);
 	});
 
 	it("creates expected files", function (done) {
@@ -26,15 +40,15 @@ describe("incubator generator", function () {
 			"Gruntfile.js"
 		];
 
-		helpers.mockPrompt(this.app, {
+		helpers.mockPrompt(app, {
 			projectName        : "test-project",
 			projectDescription : "This is a test project",
 			projectGitRepoUrl  : "git@github.com:inetCatapult/test-project.git"
 		});
 
-		this.app.options["skip-install"] = true;
+		app.options["skip-install"] = true;
 
-		this.app.run({}, function () {
+		app.run({}, function () {
 			helpers.assertFile(expected);
 			done();
 		});
