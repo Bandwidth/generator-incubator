@@ -1,8 +1,6 @@
-var util   = require("util");
 var path   = require("path");
 var yeoman = require("yeoman-generator");
 var yosay  = require("yosay");
-var chalk  = require("chalk");
 var q      = require("q");
 
 var IncubatorGenerator = yeoman.generators.Base.extend({
@@ -56,7 +54,8 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 		this.copy("gitignore", ".gitignore");
 		this.copy("gitattributes", ".gitattributes");
 		this.copy("jshint.json", ".jshint.json");
-		this.copy("jscs.json", ".jscs.json");
+		this.copy("test/jshint.json", "test/.jshint.json");
+		this.copy("jscsrc", ".jscsrc");
 		this.copy("travis.yml", ".travis.yml");
 
 		this.template("_package.json", "package.json");

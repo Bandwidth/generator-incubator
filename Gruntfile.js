@@ -1,20 +1,31 @@
+var _ = require("lodash");
+
 module.exports = function (grunt) {
 
 	var sourceFiles = [ "*.js", "app/**/*.js" ];
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
+	var defaultJsHintOptions = require("./.jshint.json");
+	var testJsHintOptions = _.extend(require("./test/.jshint.json"), defaultJsHintOptions);
+
 	grunt.initConfig({
 		jscs : {
 			src     : allFiles,
 			options : {
-				config : ".jscs.json"
+				config : ".jscsrc"
 			}
 		},
 
 		jshint : {
-			jshintrc : ".jshint.json",
-			src      : allFiles
+			src     : sourceFiles,
+			options : defaultJsHintOptions,
+			test    : {
+				options : testJsHintOptions,
+				files   : {
+					test : testFiles
+				}
+			}
 		},
 
 		mochaTest : {
