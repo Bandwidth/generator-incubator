@@ -25,6 +25,5 @@
   "maxparams": 3,
   "maxstatements": false,
   "maxlen": 120,
-  "node": true,
   "ignores": [ "node_modules/**/*.js" ]
 }
