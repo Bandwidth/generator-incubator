@@ -33,6 +33,7 @@ describe("incubator generator", function () {
 	it("creates expected files", function (done) {
 		var expected = [
 			".jshint.json",
+			"test/.jshint.json",
 			".jscsrc",
 			".travis.yml",
 			".gitignore",
