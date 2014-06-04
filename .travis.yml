@@ -3,6 +3,15 @@ node_js:
   - "0.11"
   - "0.10"
 before_install:
+  - npm config set registry https://npm.bwrnd.com
+  - npm config set always-auth true
+  - echo -ne "${NPM_USER}\n${NPM_PASS}\n${NPM_EMAIL}\n" | npm login
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != "generator-incubator" ]; then cd .. && eval "mv $currentfolder generator-incubator" && cd generator-incubator; fi
+env:
+  global:
+    # NPM_PASS
+    - secure: "K+At3KABQPZLRQ7DOdpQ5IKDHiAbOKPTgeZYw+z/kqyWxQQQxtZtcyeT6EjDmuGpU95J8tigVHqsGtYQeDJYMAya4rdZE/uLX38xU9gXsOEfFaQ4oFz+SUUNXCfL+7QpiNOPahHnrHFfC2w6iexOqyyv+B8hbWoLU/0Vfqd2kLQ="
+    - NPM_USER=incubation
+    - NPM_EMAIL=incubator@bandwidth.com
 
