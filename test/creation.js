@@ -21,7 +21,6 @@ describe("incubator generator", function () {
 			".jshint.json",
 			".jscs.json",
 			".travis.yml",
-			".editorconfig",
 			".gitignore",
 			"package.json",
 			"Gruntfile.js"

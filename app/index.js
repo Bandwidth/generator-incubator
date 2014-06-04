@@ -1,8 +1,9 @@
-var util = require("util");
-var path = require("path");
+var util   = require("util");
+var path   = require("path");
 var yeoman = require("yeoman-generator");
-var yosay = require("yosay");
-var chalk = require("chalk");
+var yosay  = require("yosay");
+var chalk  = require("chalk");
+var q      = require("q");
 
 var IncubatorGenerator = yeoman.generators.Base.extend({
 	// Your initialization methods (checking current project state, getting configs, etc)
@@ -24,7 +25,7 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 			name    : "projectName",
 			message : "What is the name of this project?",
 			default : function () {
-				return process.cwd().split(path.sep).pop();
+				return path.basename(process.cwd());
 			}
 		}, {
 			type    : "input",
@@ -52,7 +53,6 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 		this.mkdir("test");
 		this.mkdir("coverage");
 
-		this.copy("editorconfig", ".editorconfig");
 		this.copy("gitignore", ".gitignore");
 		this.copy("jshint.json", ".jshint.json");
 		this.copy("jscs.json", ".jscs.json");
@@ -62,26 +62,49 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 		this.template("_Gruntfile.js", "Gruntfile.js");
 	},
 
-	// Default priority
-	default : function () {
-
-	},
-
-	// Where you write the generator specific files (routes, controllers, etc)
-	writing : function () {
-
-	},
-
-	// Where conflicts are handled (used internally)
-	conflicts : function () {
-
-	},
-
 	// Where installation are run (npm, bower)
 	install : function () {
-		if (!this.options["skip-install"]) {
-			this.installDependencies();
+		if (this.options["skip-install"]) {
+			return;
 		}
+
+		var done = this.async();
+		var self = this;
+
+		var dependencies = [
+			"lodash",
+			"q"
+		];
+
+		var devDependencies = [
+			"mocha",
+			"istanbul",
+			"sinon",
+			"grunt",
+			"grunt-cli",
+			"grunt-contrib-jshint",
+			"grunt-contrib-clean",
+			"grunt-jscs-checker",
+			"grunt-mocha-test",
+			"grunt-istanbul-coverage"
+		];
+
+		function installDependencies (deps, args) {
+			var deferred = q.defer();
+
+			self.npmInstall(deps, args, function () {
+				deferred.resolve();
+			});
+
+			return deferred.promise;
+		}
+
+		this.log("Installing Dependencies...");
+
+		q.allSettled([
+			installDependencies(dependencies, { "--save" : "" }),
+			installDependencies(devDependencies, { "--save-dev" : "" })
+		]).nodeify(done);
 	},
 
 	// Called last, cleanup, say good bye, etc
