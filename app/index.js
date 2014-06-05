@@ -77,16 +77,13 @@ var IncubatorGenerator = yeoman.generators.Base.extend({
 		];
 
 		var devDependencies = [
-			"mocha",
-			"istanbul",
 			"sinon",
 			"grunt",
 			"grunt-cli",
-			"grunt-contrib-jshint",
 			"grunt-contrib-clean",
 			"grunt-jscs-checker",
-			"grunt-mocha-test",
-			"grunt-istanbul-coverage"
+			"grunt-contrib-jshint",
+			"grunt-mocha-istanbul"
 		];
 
 		function installDependencies (deps, args) {

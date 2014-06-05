@@ -28,26 +28,30 @@ module.exports = function (grunt) {
 			}
 		},
 
-		mochaTest : {
-			test : {
-				options : {
-					reporter : "spec"
-				},
-				src     : testFiles
+		/* jshint camelcase: false */
+		mocha_istanbul : {
+			coverage : {
+				src : "test"
 			}
-		}
+		},
+
+		clean : [ "coverage" ]
+	});
+
+	grunt.event.on("coverage", function (lcovFileContents, done) {
+
+		done();
 	});
 
 	// Load plugins
+	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs-checker");
-	grunt.loadNpmTasks("grunt-mocha-test");
+	grunt.loadNpmTasks("grunt-mocha-istanbul");
 
 	// Register tasks
 	grunt.registerTask("lint", "Check for common code problems.", [ "jshint" ]);
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
-	grunt.registerTask("test", "Run the test suite.", [ "mochaTest" ]);
-
-	grunt.registerTask("default", [ "lint", "style", "test" ]);
+	grunt.registerTask("default", [ "clean", "lint", "style", "mocha_istanbul:coverage" ]);
 
 };
