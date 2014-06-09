@@ -88,7 +88,7 @@ CoreGenerator.prototype.git = function promptForInfo () {
 	} ];
 
 	this.prompt(prompts, function (props) {
-		this.project.gitRepoUrl = props.projectGitRepoUrl;
+		this.project.gitRepoUrl = props.gitRepoUrl;
 
 		done();
 	}.bind(this));

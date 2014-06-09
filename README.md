@@ -4,21 +4,14 @@
 
 ### What is this project for?
 
-The Bandwidth Incubator needed a way to reduce time spent setting up projects.
+The Bandwidth Incubator team needed a way to reduce time spent setting up projects.
 To do this we decided to use [Yeoman](yeoman.io). It is recommended to read their
 documentation before using this tool, to be familiar with it.
 
 This generator will set up a project with all the configuration necessary to work
 out of the box with the BW Incubator build pipeline.
 
-### Prerequisites
-
-We use TravisCI as our CI/CD system. Due to perceived availability issues with
-the public NPM registry causing our builds to fail, we decided to use a private
-registry that we host. As a consequence it is required to have the `travis` Ruby
-gem installed before this generator can be used.
-
-### Steps
+### Usage
 
 1) Install the generator `sudo npm install -g generator-incubator`
 2) `mkdir ~/Projects/project-name`
@@ -33,14 +26,17 @@ gem installed before this generator can be used.
         - used in package.json
     - What is URL of the NPM registry you want to use?
         - used in package.json
-    - What is your username for this repo?
-        - used in .travis.yml
-    - What is your password for this repo?
-        - used in .travis.yml
-        - this is encrypted using `travis encrypt` before being placed in .travis.yml
-    - What is your email address for signing into this repo?
-        - used in .travis.yml
 
+
+### Sub-Generators
+The incubator generator makes use of sub-generators for different project capabilities.
+The main generator will invoke the default sub-generators, but you can always run
+just a specific sub-generator in a directory. For example, you might only want to have
+a .travis.yml file created, but nothing else. A sub-generator like this could be invoked
+with the following command: `yo incubator:travis`
+
+Currently the only sub-generator is "core". It adds all files required to work with the
+Incubator best practices and requirements.
 
 ## License
 
