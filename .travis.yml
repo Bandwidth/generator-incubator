@@ -12,4 +12,3 @@ env:
     - secure: "K+At3KABQPZLRQ7DOdpQ5IKDHiAbOKPTgeZYw+z/kqyWxQQQxtZtcyeT6EjDmuGpU95J8tigVHqsGtYQeDJYMAya4rdZE/uLX38xU9gXsOEfFaQ4oFz+SUUNXCfL+7QpiNOPahHnrHFfC2w6iexOqyyv+B8hbWoLU/0Vfqd2kLQ="
     - NPM_USER=incubation
     - NPM_EMAIL=incubator@bandwidth.com
-

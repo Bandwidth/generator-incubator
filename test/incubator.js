@@ -1,6 +1,5 @@
 var helpers = require("yeoman-generator").test;
-var rimraf  = require("rimraf");
-var assert = require("assert");
+var assert  = require("assert");
 var path    = require("path");
 
 describe("incubator generator", function () {
@@ -14,43 +13,26 @@ describe("incubator generator", function () {
 			}
 
 			app = helpers.createGenerator("incubator:app", [
-				"../../app"
+				"../../app",
+				"../../core"
 			]);
 
 			done();
 		});
 	});
 
-	afterEach(function (done) {
-		rimraf(testDirectory, done);
-	});
-
-	it("can be imported without blowing up", function () {
+	it("can be imported without blowing up", function (done) {
 		var app = require("../app");
 		assert(app !== undefined);
+
+		done();
 	});
 
-	it("creates expected files", function (done) {
-		var expected = [
-			".jshint.json",
-			"test/.jshint.json",
-			".jscsrc",
-			".travis.yml",
-			".gitignore",
-			"package.json",
-			"Gruntfile.js"
-		];
-
-		helpers.mockPrompt(app, {
-			projectName        : "test-project",
-			projectDescription : "This is a test project",
-			projectGitRepoUrl  : "git@github.com:inetCatapult/test-project.git"
-		});
-
+	it("outputs a greeting to stdout", function (done) {
 		app.options["skip-install"] = true;
+		app.options["skip-welcome-message"] = false;
 
 		app.run({}, function () {
-			helpers.assertFile(expected);
 			done();
 		});
 	});

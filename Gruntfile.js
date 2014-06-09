@@ -1,8 +1,10 @@
+"use strict";
+
 var _ = require("lodash");
 
 module.exports = function (grunt) {
 
-	var sourceFiles = [ "*.js", "app/**/*.js" ];
+	var sourceFiles = [ "*.js", "app/**/*.js", "core/**/*.js" ];
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
@@ -30,28 +32,45 @@ module.exports = function (grunt) {
 
 		/* jshint camelcase: false */
 		mocha_istanbul : {
+		/* jshint camelcase: true */
 			coverage : {
-				src : "test"
+				src     : "test",
+				options : {
+					check : {
+						statements : 50,
+						branches   : 50,
+						lines      : 50,
+						functions  : 50
+					}
+				}
 			}
 		},
 
-		clean : [ "coverage" ]
-	});
+		watch : {
+			scripts : {
+				files   : allFiles,
+				tasks   : [ "lint", "style" ],
+				options : {
+					spawn : false,
+				},
+			},
+		},
 
-	grunt.event.on("coverage", function (lcovFileContents, done) {
-
-		done();
+		clean : [ "coverage", "test/temp" ]
 	});
 
 	// Load plugins
 	grunt.loadNpmTasks("grunt-contrib-clean");
+	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs-checker");
 	grunt.loadNpmTasks("grunt-mocha-istanbul");
 
+	grunt.registerTask("test", [ "mocha_istanbul:coverage" ]);
+
 	// Register tasks
 	grunt.registerTask("lint", "Check for common code problems.", [ "jshint" ]);
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
-	grunt.registerTask("default", [ "clean", "lint", "style", "mocha_istanbul:coverage" ]);
+	grunt.registerTask("default", [ "clean", "lint", "style", "test" ]);
 
 };
