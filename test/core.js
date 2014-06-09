@@ -31,7 +31,7 @@ describe("incubator core generator", function () {
 		var props = {
 			projectName        : "test-project",
 			projectDescription : "This is a test project",
-			projectGitRepoUrl  : "git@github.com:inetCatapult/test-project.git",
+			gitRepoUrl         : "git@github.com:inetCatapult/test-project.git",
 			npmRegistry        : "https://npm.bwrnd.com"
 		};
 
@@ -45,7 +45,7 @@ describe("incubator core generator", function () {
 
 			assert(pkg.name === props.projectName);
 			assert(pkg.description === props.projectDescription);
-			assert(pkg.repository.url === props.projectGitRepoUrl);
+			assert(pkg.repository.url === props.gitRepoUrl);
 			assert(pkg.publishConfig.registry === props.npmRegistry);
 
 			done();

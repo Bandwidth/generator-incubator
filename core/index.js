@@ -105,7 +105,7 @@ CoreGenerator.prototype.npm = function promptForInfo () {
 	} ];
 
 	this.prompt(prompts, function (props) {
-		this.npm.registry       = props.npmRegistry;
+		this.npm.registry = props.npmRegistry;
 
 		done();
 	}.bind(this));
