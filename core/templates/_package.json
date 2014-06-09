@@ -1,0 +1,15 @@
+{
+  "name": "<%= _(project.name).trim().slugify() %>",
+  "version": "0.0.0",
+  "description": "<%= _(project.description).trim() %>",
+  "publishConfig": {
+    "registry": "<%= (npm.registry) %>"
+  },
+  "repository": {
+  	"type": "git",
+  	"url": "<%= _(project.gitRepoUrl).trim() %>"
+	},
+	"scripts": {
+		"test": "grunt"
+	}
+}
