@@ -1,4 +1,5 @@
-var _ = require("lodash");
+var _ =  require("lodash");
+var fs = require("fs");
 
 module.exports = function (grunt) {
 
@@ -6,8 +7,11 @@ module.exports = function (grunt) {
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
-	var defaultJsHintOptions = require("./.jshint.json");
-	var testJsHintOptions = _.extend(require("./test/.jshint.json"), defaultJsHintOptions);
+	var defaultJsHintOptions = JSON.parse(fs.readFileSync("./.jshint.json"));
+	var testJsHintOptions = _.extend(
+		JSON.parse(fs.readFileSync("./test/.jshint.json")),
+		defaultJsHintOptions
+	);
 
 	grunt.initConfig({
 		jscs : {

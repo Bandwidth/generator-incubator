@@ -34,15 +34,7 @@ module.exports = function (grunt) {
 		mocha_istanbul : {
 		/* jshint camelcase: true */
 			coverage : {
-				src     : "test",
-				options : {
-					check : {
-						statements : 50,
-						branches   : 50,
-						lines      : 50,
-						functions  : 50
-					}
-				}
+				src : "test"
 			}
 		},
 

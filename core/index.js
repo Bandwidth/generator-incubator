@@ -17,6 +17,7 @@ var CoreGenerator = module.exports = function CoreGenerator () {
 
 	this.devDependencies = [
 		"sinon",
+		"chai",
 		"grunt",
 		"grunt-cli",
 		"grunt-contrib-clean",
@@ -31,23 +32,11 @@ var CoreGenerator = module.exports = function CoreGenerator () {
 			return;
 		}
 
-		var self = this;
-
-		function installDependencies (deps, args) {
-			var deferred = q.defer();
-
-			self.npmInstall(deps, args, function () {
-				deferred.resolve();
-			});
-
-			return deferred.promise;
-		}
-
 		this.log("Installing Dependencies...");
 
 		q.allSettled([
-			installDependencies(this.dependencies, { "--save" : "" }),
-			installDependencies(this.devDependencies, { "--save-dev" : "" })
+			q.ninvoke(this, "npmInstall", this.dependencies, { "--save" : "" }),
+			q.ninvoke(this, "npmInstall", this.devDependencies, { "--save-dev" : "" })
 		]).nodeify(function () {
 
 		});

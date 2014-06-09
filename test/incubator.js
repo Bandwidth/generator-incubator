@@ -19,6 +19,7 @@ describe("incubator generator", function () {
 
 			app.options["skip-welcome-message"] = true;
 			app.options["skip-install"] = true;
+			app.options["skip-core"] = true;
 
 			done();
 		});
@@ -29,11 +30,5 @@ describe("incubator generator", function () {
 		assert(app !== undefined);
 
 		done();
-	});
-
-	it("outputs a greeting to stdout", function (done) {
-		app.run({}, function () {
-			done();
-		});
 	});
 });
