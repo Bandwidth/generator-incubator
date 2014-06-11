@@ -1,14 +1,22 @@
 language: node_js
 node_js:
-  - "0.11"
-  - "0.10"
+- '0.11'
+- '0.10'
 before_install:
-  - npm config set registry https://npm.bwrnd.com
-  - npm config set always-auth true
-  - echo -ne "${NPM_USER}\n${NPM_PASS}\n${NPM_EMAIL}\n" | npm login
+- echo "_auth = ${NPM_API_TOKEN}" > ${HOME}/.npmrc
+- echo "registry = ${NPM_REGISTRY}" >> ${HOME}/.npmrc
+- echo "email = ${NPM_EMAIL}" >> ${HOME}/.npmrc
+deploy:
+  api_key: ${NPM_DEPLOY_API_TOKEN}
+  email: incubator@bandwidth.com
+  provider: npm
 env:
   global:
-    # NPM_PASS
-    - secure: "K+At3KABQPZLRQ7DOdpQ5IKDHiAbOKPTgeZYw+z/kqyWxQQQxtZtcyeT6EjDmuGpU95J8tigVHqsGtYQeDJYMAya4rdZE/uLX38xU9gXsOEfFaQ4oFz+SUUNXCfL+7QpiNOPahHnrHFfC2w6iexOqyyv+B8hbWoLU/0Vfqd2kLQ="
-    - NPM_USER=incubation
-    - NPM_EMAIL=incubator@bandwidth.com
+  # NPM_API_TOKEN
+  - secure: RHPDagwSuwklhZvDuFWAUFPItytqnhVV8Em9HSTWadjo0HJQAB0T5BZXemXYO1ZITL0Cj33EO22RZgHwS9BQIjQfn1KERWVy4s4Dn3RD/KWmxWGuTiDwcJ4lznTLFMXl3m5JW1Oftl/ZfUFCAs0SuWAqJVHhaLJdReMQXe603uE=
+  - NPM_EMAIL=incubation@bandwidth.com
+  - NPM_REGISTRY=https://npm.bwrnd.com
+  # NPM_DEPLOY_API_TOKEN
+  - secure: iTbG8DdjZYtXm6ED9dKPfWmHD0+xVVLzqqmpIPVcBfWvae7r08aLpVVmgh9PHDNiQDhS/KNPCAAS00EjEGW7hZ2S3YhgvyX69iP2Kg3gZSI99wzgrhHXVJ4QF7S5Cl8VTF9hWYfjM51s+B65cQUcdiUvA5VGm3xIcdjzTYxNHIE=
+  - NPM_DEPLOY_EMAIL=incubator@bandwidth.com
+  - NPM_DEPLOY_REGISTRY=https://registry.npmjs.org
