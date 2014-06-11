@@ -25,7 +25,7 @@ var IncubatorGenerator = module.exports = function IncubatorGenerator () {
 
 util.inherits(IncubatorGenerator, yeoman.generators.Base);
 
-IncubatorGenerator.prototype.greeting = function greeting () {
+IncubatorGenerator.prototype.greeting = function () {
 	if (!this.options["skip-welcome-message"]) {
 		this.log(incSay("Welcome to the Incubator Generator!"));
 		this.log("By default I will create a Gruntfile and all dotfiles required to work");
@@ -34,7 +34,7 @@ IncubatorGenerator.prototype.greeting = function greeting () {
 	}
 };
 
-IncubatorGenerator.prototype.components = function components () {
+IncubatorGenerator.prototype.components = function () {
 	if (!this.options["skip-core"]) {
 		this.invoke("incubator:core", this.args);
 	}
