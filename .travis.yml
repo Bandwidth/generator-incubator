@@ -12,10 +12,9 @@ deploy:
     secure: jyAYvOW1E8gO5ijAg5qvWRSKlkGN2zh8FVRZ1ecpTaHF4/6xnH7LwpyVPHFcvhd9o82LSyFfHzz/oPbYzt7CoQPqxtVKCOs/rzq6dNg7zeJ00LJ0b2a2HzNkdrfAq1aLMHJBCfd8dgkSI65drZl73IKo54a80LjBHAtv+0v8g0Q=
   email: incubator@bandwidth.com
   provider: npm
+  on: travis-component
 env:
   global:
   - NPM_EMAIL=incubation@bandwidth.com
   - NPM_REGISTRY=https://npm.bwrnd.com
-  - NPM_DEPLOY_EMAIL=incubator@bandwidth.com
-  - NPM_DEPLOY_REGISTRY=https://registry.npmjs.org=
   - secure: ff7WiMWGGX+v5d1qOyVQZv6RhsL+cuOAddJ3Zl6+H9tosehoqxrrEv0M75XoBaBL12JquV34fT9M0KXXKHxEb2u/lS2BfGu6ItBmMVv4xImW0b7VuhGK0VUraCvdC5CXATNOjC7Teo+WaDp1pOqOZS8CS01cuyarjDXVIEmTRH4=
