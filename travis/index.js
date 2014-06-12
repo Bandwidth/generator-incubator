@@ -1,7 +1,8 @@
 "use strict";
 
-var yeoman = require("yeoman-generator");
-var util   = require("util");
+var yeoman  = require("yeoman-generator");
+var util    = require("util");
+var shelljs = require("shelljs");
 
 var TravisGenerator = module.exports = function TravisGenerator () {
 	yeoman.generators.Base.apply(this, arguments);
@@ -10,13 +11,30 @@ var TravisGenerator = module.exports = function TravisGenerator () {
 		node : {
 			versions : []
 		},
-		npm  : {
+
+		npm : {
 			registry : {}
 		}
 	};
 };
 
 util.inherits(TravisGenerator, yeoman.generators.NamedBase);
+
+TravisGenerator.prototype.prerequisites = function () {
+	// Check that this is a Git repo
+	var gitRemoteCode = shelljs.exec("git remote -v", { silent : true }).code;
+
+	if (gitRemoteCode !== 0) {
+		this.log.error("This generator must be run in a directory that is a Git repo set up with TravisCI.");
+		shelljs.exit(1);
+	}
+
+	// Check that the travis gem is installed
+	if (!shelljs.which("travis")) {
+		this.log.error("This generator requires the Travis gem to be installed.");
+		shelljs.exit(1);
+	}
+};
 
 TravisGenerator.prototype.nodeVersions = function () {
 	var done = this.async();
@@ -74,22 +92,16 @@ TravisGenerator.prototype.registry = function () {
 		}
 	}, {
 		type     : "input",
-		name     : "npmRegistryUsername",
-		message  : "What is your username for this NPM registry?",
+		name     : "npmRegistryApiToken",
+		message  : "What is your API token for this NPM registry?",
 		validate : function (input) {
-			return self._.trim(input).length > 0 || "Username is required";
-		}
-	}, {
-		type     : "password",
-		name     : "npmRegistryPassword",
-		message  : "What is your password for this NPM registry?",
-		validate : function (input) {
-			return self._.trim(input).length > 0 || "Password is required";
+			return self._.trim(input).length > 0 || "Api token is required";
 		}
 	}, {
 		type     : "input",
 		name     : "npmRegistryEmail",
 		message  : "What is your email address for this NPM registry?",
+		default  : "incubator@bandwidth.com",
 		validate : function (input) {
 			return self._.trim(input).length > 0 || "Email is required";
 		}
@@ -97,8 +109,7 @@ TravisGenerator.prototype.registry = function () {
 
 	this.prompt(prompts, function (props) {
 		this.travis.npm.registry.url = props.npmRegistryUrl;
-		this.travis.npm.registry.username = props.npmRegistryUsername;
-		this.travis.npm.registry.password = props.npmRegistryPassword;
+		this.travis.npm.registry.apiToken = props.npmRegistryApiToken;
 		this.travis.npm.registry.email = props.npmRegistryEmail;
 
 		done();
@@ -106,6 +117,12 @@ TravisGenerator.prototype.registry = function () {
 };
 
 // Create .travis.yml using the `travis` Ruby gem
-TravisGenerator.prototype.configFile = function () {
+TravisGenerator.prototype.initTravis = function () {
+	this.travis.npm.registry.encryptedApiKey = shelljs.exec(
+		"travis encrypt NPM_API_TOKEN=" + this.travis.npm.registry.apiToken,
+		{ silent : true }
+	).output;
 
+	// Create .travis.yml with all but encrypted environment variables
+	this.template("_travis.yml", ".travis.yml");
 };
