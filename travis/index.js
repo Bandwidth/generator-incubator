@@ -116,12 +116,13 @@ TravisGenerator.prototype.registry = function () {
 	}.bind(this));
 };
 
-// Create .travis.yml using the `travis` Ruby gem
 TravisGenerator.prototype.initTravis = function () {
 	this.travis.npm.registry.encryptedApiKey = shelljs.exec(
 		"travis encrypt NPM_API_TOKEN=" + this.travis.npm.registry.apiToken,
-		{ silent : true }
+		{ silent : false }
 	).output;
+
+	this.log(this.travis.npm.registry.encryptedApiKey);
 
 	// Create .travis.yml with all but encrypted environment variables
 	this.template("_travis.yml", ".travis.yml");
