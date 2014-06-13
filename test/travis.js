@@ -46,6 +46,7 @@ describe("incubator travis generator", function () {
 
 	afterEach(function (done) {
 		shelljs.exec.restore();
+		shelljs.which.restore();
 
 		done();
 	});
