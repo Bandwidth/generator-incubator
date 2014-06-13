@@ -18,8 +18,7 @@ describe("incubator travis generator", function () {
 	};
 
 	beforeEach(function (done) {
-		sinon
-			.stub(shelljs, "exec")
+		sinon.stub(shelljs, "exec")
 			.withArgs(
 				"travis encrypt NPM_API_TOKEN=" + props.npmRegistryApiToken,
 				{ silent : false }
@@ -27,6 +26,10 @@ describe("incubator travis generator", function () {
 			.returns("\"9SD8F9SD8F9S8DF9SD8F9SD8FJLKSDJFLSKDJF\"")
 			.withArgs("git remote -v", { silent : true })
 			.returns({ code : 0 });
+
+		sinon.stub(shelljs, "which")
+			.withArgs("travis")
+			.returns(true);
 
 		helpers.testDirectory(testDirectory, function (err) {
 			if (err) {
