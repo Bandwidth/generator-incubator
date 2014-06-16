@@ -45,7 +45,7 @@ var CoreGenerator = module.exports = function CoreGenerator () {
 
 util.inherits(CoreGenerator, yeoman.generators.NamedBase);
 
-CoreGenerator.prototype.projectInfo = function projectInfo () {
+CoreGenerator.prototype.projectInfo = function () {
 	var done = this.async();
 
 	var prompts = [ {
@@ -67,13 +67,18 @@ CoreGenerator.prototype.projectInfo = function projectInfo () {
 	}.bind(this));
 };
 
-CoreGenerator.prototype.git = function promptForInfo () {
+CoreGenerator.prototype.git = function () {
 	var done = this.async();
 
 	var prompts = [ {
-		type    : "input",
-		name    : "gitRepoUrl",
-		message : "What is the URL of the Git repo for this project?"
+		type     : "input",
+		name     : "gitRepoUrl",
+		message  : "What is the URL of the Git repo for this project?",
+		validate : function (input) {
+			return input.match(
+				/((git|ssh|http(s)?)|(git@[\w.]+))(:(\/\/)?)([\w.@\:\/-~]+)(.git)(\/)?/
+			) !== null;
+		}
 	} ];
 
 	this.prompt(prompts, function (props) {
@@ -83,7 +88,7 @@ CoreGenerator.prototype.git = function promptForInfo () {
 	}.bind(this));
 };
 
-CoreGenerator.prototype.npm = function promptForInfo () {
+CoreGenerator.prototype.npm = function () {
 	var done = this.async();
 
 	var prompts = [ {
@@ -100,13 +105,13 @@ CoreGenerator.prototype.npm = function promptForInfo () {
 	}.bind(this));
 };
 
-CoreGenerator.prototype.directories = function directories () {
+CoreGenerator.prototype.directories = function () {
 	this.mkdir("lib");
 	this.mkdir("test");
 	this.mkdir("coverage");
 };
 
-CoreGenerator.prototype.files = function files () {
+CoreGenerator.prototype.files = function () {
 	this.copy("gitignore", ".gitignore");
 	this.copy("gitattributes", ".gitattributes");
 	this.copy("jshint.json", ".jshint.json");

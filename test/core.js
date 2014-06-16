@@ -21,7 +21,7 @@ describe("incubator core generator", function () {
 	});
 
 	it("can be imported without blowing up", function (done) {
-		var app = require("../app");
+		var app = require("../core");
 		assert(app !== undefined);
 
 		done();

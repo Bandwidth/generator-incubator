@@ -5,7 +5,7 @@ var fs = require("fs");
 
 module.exports = function (grunt) {
 
-	var sourceFiles = [ "*.js", "app/**/*.js", "core/**/*.js" ];
+	var sourceFiles = [ "*.js", "app/**/*.js", "core/**/*.js", "travis/**/*.js" ];
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
