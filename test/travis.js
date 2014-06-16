@@ -1,5 +1,4 @@
 var helpers = require("yeoman-generator").test;
-var assert  = require("assert");
 var path    = require("path");
 var shelljs = require("shelljs");
 var yaml    = require("js-yaml");
@@ -44,25 +43,24 @@ describe("incubator travis generator", function () {
 		});
 	});
 
-	afterEach(function (done) {
+	afterEach(function () {
 		shelljs.exec.restore();
 		shelljs.which.restore();
-
-		done();
 	});
 
-	it("can be imported without blowing up", function (done) {
+	it("can be imported without blowing up", function () {
 		var app = require("../travis");
 		assert(app !== undefined, "result of a require should not be undefined");
-
-		done();
 	});
 
 	it("creates a .travis.yml config file", function (done) {
 		helpers.mockPrompt(app, props);
 
 		app.run({}, function () {
+			assert(shelljs.which.called);
+			assert(shelljs.exec.called);
 			assert(shelljs.test("-f", testTravisYml), "no .travis.yml found");
+
 			done();
 		});
 	});
