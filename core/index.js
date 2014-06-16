@@ -52,7 +52,7 @@ CoreGenerator.prototype.projectInfo = function () {
 		type    : "input",
 		name    : "projectName",
 		message : "What is the name of this project?",
-		default : this.appname
+		default : this._.slugify(this.appname)
 	}, {
 		type    : "input",
 		name    : "projectDescription",
@@ -76,7 +76,7 @@ CoreGenerator.prototype.git = function () {
 		message  : "What is the URL of the Git repo for this project?",
 		validate : function (input) {
 			return input.match(
-				/((git|ssh|http(s)?)|(git@[\w.]+))(:(\/\/)?)([\w.@\:\/-~]+)(.git)(\/)?/
+				/(?:git|ssh|https?|git@[\w\.]+):(?:\/\/)?[\w\.@:\/\-~]+\.git\/?/
 			) !== null;
 		}
 	} ];
