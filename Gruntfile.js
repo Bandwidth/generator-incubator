@@ -1,7 +1,6 @@
 "use strict";
 
 var _  = require("lodash");
-var fs = require("fs");
 
 module.exports = function (grunt) {
 
@@ -9,9 +8,9 @@ module.exports = function (grunt) {
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
-	var defaultJsHintOptions = JSON.parse(fs.readFileSync("./.jshint.json"));
+	var defaultJsHintOptions = grunt.file.readJSON("./.jshint.json");
 	var testJsHintOptions = _.extend(
-		JSON.parse(fs.readFileSync("./test/.jshint.json")),
+		grunt.file.readJSON("./test/.jshint.json"),
 		defaultJsHintOptions
 	);
 
