@@ -37,7 +37,7 @@
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-jscs-checker": "^0.4.4",
+    "grunt-jscs": "^0.6.1",
     "grunt-mocha-istanbul": "^1.4.1",
     "js-yaml": "^3.0.2",
     "sinon": "^1.10.2"
