@@ -1,4 +1,4 @@
-# generator-incubator [![Build Status](https://magnum.travis-ci.com/inetCatapult/generator-incubator.svg?token=PbDurkvGqqM4EqWpSZ3B)](https://magnum.travis-ci.com/inetCatapult/generator-incubator)
+# generator-incubator [![Build Status](https://travis-ci.org/inetCatapult/generator-incubator.svg?branch=0.0.5)](https://travis-ci.org/inetCatapult/generator-incubator)
 
 ## Getting Started
 
