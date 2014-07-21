@@ -22,7 +22,7 @@ var CoreGenerator = module.exports = function CoreGenerator () {
 		"grunt-cli",
 		"grunt-contrib-clean",
 		"grunt-contrib-watch",
-		"grunt-jscs-checker",
+		"grunt-jscs",
 		"grunt-contrib-jshint",
 		"grunt-mocha-istanbul"
 	];
