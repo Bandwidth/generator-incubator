@@ -1,4 +1,9 @@
-# generator-incubator [![Build Status](https://travis-ci.org/inetCatapult/generator-incubator.svg?branch=0.0.5)](https://travis-ci.org/inetCatapult/generator-incubator)
+generator-incubator [![Build Status](https://travis-ci.org/inetCatapult/generator-incubator.svg?branch=0.0.5)](https://travis-ci.org/inetCatapult/generator-incubator)
+=========
+
+[![Dependencies Status](https://david-dm.org/inetCatapult/generator-incubator.png)](https://david-dm.org/inetCatapult/generator-incubator)
+[![DevDependencies Status](https://david-dm.org/inetCatapult/generator-incubator/dev-status.png)](https://david-dm.org/inetCatapult/generator-incubator#info=devDependencies)
+[![PeerDependencies Status](https://david-dm.org/inetCatapult/generator-incubator/peer-status.png)](https://david-dm.org/inetCatapult/generator-incubator#info=peerDependencies)
 
 ## Getting Started
 
@@ -13,11 +18,11 @@ out of the box with the BW Incubator build pipeline.
 
 ### Usage
 
-1) Install the generator `sudo npm install -g generator-incubator`
-2) `mkdir ~/Projects/project-name`
-3) `cd ~/Projects/project-name`
-4) `yo incubator`
-5) Answer the questions
+1. Install the generator `sudo npm install -g generator-incubator`
+2. `mkdir ~/Projects/project-name`
+3. `cd ~/Projects/project-name`
+4. `yo incubator`
+5. Answer the questions
     - What is the name of this project?
         - used in package.json
     - Please provide a brief description of this project :
@@ -34,9 +39,6 @@ The main generator will invoke the default sub-generators, but you can always ru
 just a specific sub-generator in a directory. For example, you might only want to have
 a .travis.yml file created, but nothing else. A sub-generator like this could be invoked
 with the following command: `yo incubator:travis`
-
-Currently the only sub-generator is "core". It adds all files required to work with the
-Incubator best practices and requirements.
 
 ## License
 

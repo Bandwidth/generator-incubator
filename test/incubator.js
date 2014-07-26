@@ -1,6 +1,7 @@
 var helpers = require("yeoman-generator").test;
-var assert  = require("assert");
+var expect  = require("chai").expect;
 var path    = require("path");
+var sinon   = require("sinon");
 
 describe("incubator generator", function () {
 	var testDirectory = path.join(__dirname, "temp");
@@ -17,7 +18,7 @@ describe("incubator generator", function () {
 				"../../core"
 			]);
 
-			app.options["skip-welcome-message"] = true;
+			app.options["skip-welcome-message"] = false;
 			app.options["skip-install"] = true;
 			app.options["skip-core"] = true;
 
@@ -27,8 +28,48 @@ describe("incubator generator", function () {
 
 	it("can be imported without blowing up", function (done) {
 		var app = require("../app");
-		assert(app !== undefined);
+		expect(app).to.not.be.undefined;
 
 		done();
+	});
+
+	describe("greeting message", function () {
+		var logStub;
+
+		before(function (done) {
+			logStub = sinon.stub(app, "log");
+
+			app.run({}, done);
+		});
+
+		after(function () {
+			logStub.restore();
+		});
+
+		it("is output to the console", function () {
+			expect(logStub.called).to.equal(true);
+		});
+	});
+
+	describe("default component invocation", function () {
+		var invokeStub;
+
+		before(function (done) {
+			invokeStub = sinon.stub(app, "invoke");
+
+			app.options["skip-welcome-message"] = true;
+			app.options["skip-install"] = true;
+			app.options["skip-core"] = false;
+
+			app.run({}, done);
+		});
+
+		after(function () {
+			invokeStub.restore();
+		});
+
+		it("runs the core sub-generator", function () {
+			expect(invokeStub.calledWith("incubator:core")).to.equal(true);
+		});
 	});
 });
