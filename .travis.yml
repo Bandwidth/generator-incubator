@@ -2,6 +2,9 @@ language: node_js
 node_js:
 - '0.11'
 - '0.10'
+install:
+ - npm install
+ - gem install travis
 deploy:
   provider: npm
   email: incubator@bandwidth.com
