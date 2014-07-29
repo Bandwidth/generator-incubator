@@ -1,10 +1,10 @@
 "use strict";
 
-var _  = require("lodash");
+var _ =  require("lodash");
 
 module.exports = function (grunt) {
 
-	var sourceFiles = [ "*.js", "app/**/*.js", "core/**/*.js", "travis/**/*.js" ];
+	var sourceFiles = [ "*.js", "lib/**/*.js" ];
 	var testFiles   = [ "test/**/*.js" ];
 	var allFiles    = sourceFiles.concat(testFiles);
 
@@ -37,7 +37,15 @@ module.exports = function (grunt) {
 		mocha_istanbul : {
 		/* jshint camelcase: true */
 			coverage : {
-				src : "test"
+				src     : "test",
+				options : {
+					check : {
+						statements : 100,
+						branches   : 100,
+						lines      : 100,
+						functions  : 100
+					}
+				}
 			}
 		},
 
@@ -51,7 +59,7 @@ module.exports = function (grunt) {
 			},
 		},
 
-		clean : [ "coverage", "test/temp" ]
+		clean : [ "coverage" ]
 	});
 
 	// Load plugins
