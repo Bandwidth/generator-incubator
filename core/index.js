@@ -68,7 +68,14 @@ CoreGenerator.prototype.git = function () {
 		type     : "input",
 		name     : "gitRepoUrl",
 		message  : "What is the URL of the Git repo for this project?",
-		validate : this.validators.validateGitRepo
+		validate : this.validators.validateGitRepo,
+		default  : function () {
+			var remotes = shell.exec("git remote -v", { silent : true }).output.match(
+				/origin\s+(.+)\s+\(fetch\)/
+			);
+
+			return remotes ? remotes[1] : "";
+		}
 	} ];
 
 	if (!shell.which("git")) {
