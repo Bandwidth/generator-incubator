@@ -1,129 +1,116 @@
-"use strict";
+	"use strict";
 
 var yeoman  = require("yeoman-generator");
 var util    = require("util");
-var shelljs = require("shelljs");
+var shell   = require("shelljs");
+var yaml    = require("js-yaml");
+var path    = require("path");
+var q       = require("q");
+var fs      = require("fs");
+var _       = require("lodash");
 
 var TravisGenerator = module.exports = function TravisGenerator () {
 	yeoman.generators.Base.apply(this, arguments);
 
-	this.travis = {
-		node : {
-			versions : []
-		},
+	if (!shell.which("travis")) {
+		this.log.error("The `travis` gem must be installed to use this sub-generator!");
+		shell.exit(1);
+	}
 
-		npm : {
-			registry : {}
+	this.travis = {};
+
+	this.validators = {
+		required : function (input) {
+			return !_.isEmpty(input) || "This is a required";
 		}
 	};
 };
 
 util.inherits(TravisGenerator, yeoman.generators.NamedBase);
 
-TravisGenerator.prototype.prerequisites = function () {
-	// Check that this is a Git repo
-	var gitRemoteCode = shelljs.exec("git remote -v", { silent : true }).code;
-
-	if (gitRemoteCode !== 0) {
-		this.log.error("This generator must be run in a directory that is a Git repo set up with TravisCI.");
-		shelljs.exit(1);
-	}
-
-	// Check that the travis gem is installed
-	if (!shelljs.which("travis")) {
-		this.log.error("This generator requires the Travis gem to be installed.");
-		shelljs.exit(1);
-	}
+TravisGenerator.prototype.init = function () {
+	this.log("Initializing a .travis.yml ...");
+	shell.exec("travis init javascript --no-interactive --skip-version-check", { silent : true });
 };
 
-TravisGenerator.prototype.nodeVersions = function () {
+TravisGenerator.prototype.deploy = function () {
 	var done = this.async();
 
 	var prompts = [ {
-		type     : "checkbox",
-		name     : "nodeVersions",
-		message  : "What versions of Node does this project need to be tested against?",
-		validate : function (input) {
-			return input.length > 0 || "You must pick at lease one NodeJS version";
-		},
-		choices  : [ {
-			name    : "0.10",
-			value   : "0.10",
-			checked : true
-		}, {
-			name    : "0.11",
-			value   : "0.11",
-			checked : true
+		type    : "checkbox",
+		name    : "deploys",
+		message : "Do you want Travis to deploy to any providers?",
+		choices : [ {
+			name    : "registry.npmjs.org",
+			value   : "npm",
+			checked : false
 		} ]
 	} ];
 
 	this.prompt(prompts, function (props) {
-		this.travis.node.versions = props.nodeVersions;
+		this.travis.deploys = props.deploys;
 
 		done();
 	}.bind(this));
 };
 
-TravisGenerator.prototype.registry = function () {
+TravisGenerator.prototype.npmDeploy = function () {
+	if (!_.contains(this.travis.deploys, "npm")) {
+		return;
+	}
+
 	var done = this.async();
-	var self = this;
-
-	// Check to see if the user already has a value in the package.json publishConfig.registry
-	try {
-		var pkg = this.dest.readJSON("package.json");
-	}
-	catch (ex) {
-
-	}
 
 	var prompts = [ {
-		type    : "input",
-		name    : "npmRegistryUrl",
-		message : "What NPM registry should Travis use when running a build?",
-		default : function () {
-			// Use what is set in the publishConfig.registry
-			// property of package.json if it exists
-			if (pkg && pkg.publishConfig && pkg.publishConfig.registry) {
-				return pkg.publishConfig.registry;
-			}
-			else {
-				return "https://registry.npmjs.org";
-			}
-		}
+		type     : "input",
+		name     : "emailAddress",
+		message  : "What is the email address to use for deploying to registry.npmjs.org?",
+		validate : this.validators.required
 	}, {
 		type     : "input",
-		name     : "npmRegistryApiToken",
-		message  : "What is your API token for this NPM registry?",
-		validate : function (input) {
-			return self._.trim(input).length > 0 || "Api token is required";
-		}
-	}, {
-		type     : "input",
-		name     : "npmRegistryEmail",
-		message  : "What is your email address for this NPM registry?",
-		default  : "incubator@bandwidth.com",
-		validate : function (input) {
-			return self._.trim(input).length > 0 || "Email is required";
-		}
+		name     : "apiKey",
+		message  : "What is the api key to use for deploying to registry.npmjs.org",
+		validate : this.validators.required
 	} ];
 
 	this.prompt(prompts, function (props) {
-		this.travis.npm.registry.url = props.npmRegistryUrl;
-		this.travis.npm.registry.apiToken = props.npmRegistryApiToken;
-		this.travis.npm.registry.email = props.npmRegistryEmail;
+		var encryptedApiKey = shell.exec(
+			"travis encrypt --no-interactive " + props.apiKey,
+			{ silent : true }
+		).output.match(/"(.*)"/).pop();
 
-		done();
+		q.ninvoke(fs, "readFile", path.join(process.cwd(), ".travis.yml"))
+		.then(function (data) {
+			var config = yaml.safeLoad(data);
+			var oldDeployConfig = _.clone(config.deploy);
+
+			config.deploy = [];
+
+			config.deploy.push({
+				provider : "npm",
+				email    : props.emailAddress,
+				api_key  : {
+					secure : encryptedApiKey
+				}
+			});
+
+			if (!_.isEmpty(oldDeployConfig)) {
+				config.deploy.push(oldDeployConfig);
+
+				if (_.isArray(oldDeployConfig)) {
+					config.deploy = _.flatten(config.deploy);
+				}
+			}
+
+			return config;
+		})
+		.then(function (config) {
+			return q.ninvoke(fs, "writeFile", path.join(process.cwd(), ".travis.yml"), yaml.safeDump(config));
+		})
+		.catch(function () {
+			this.log.error("There was an error adding npm to the travis deploy list.");
+			shell.exit(1);
+		})
+		.nodeify(done);
 	}.bind(this));
-};
-
-TravisGenerator.prototype.initTravis = function () {
-	this.travis.npm.registry.encryptedApiKey = shelljs.exec(
-		"travis encrypt NPM_API_TOKEN=" + this.travis.npm.registry.apiToken,
-		{ silent : false }
-	).output;
-
-	this.log(this.travis.npm.registry.encryptedApiKey);
-
-	// Create .travis.yml with all but encrypted environment variables
-	this.template("_travis.yml", ".travis.yml");
 };
