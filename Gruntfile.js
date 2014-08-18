@@ -1,8 +1,8 @@
 "use strict";
 
-var _  = require("lodash");
-
 module.exports = function (grunt) {
+
+	var _ = grunt.util._;
 
 	var sourceFiles = [ "*.js", "app/**/*.js", "core/**/*.js", "travis/**/*.js" ];
 	var testFiles   = [ "test/**/*.js" ];
@@ -33,9 +33,7 @@ module.exports = function (grunt) {
 			}
 		},
 
-		/* jshint camelcase: false */
-		mocha_istanbul : {
-		/* jshint camelcase: true */
+		mochaIstanbul : {
 			coverage : {
 				src : "test"
 			}
@@ -61,9 +59,11 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-mocha-istanbul");
 
-	grunt.registerTask("test", [ "mocha_istanbul:coverage" ]);
+	// Rename tasks
+	grunt.task.renameTask("mocha_istanbul", "mochaIstanbul");
 
 	// Register tasks
+	grunt.registerTask("test", [ "mochaIstanbul:coverage" ]);
 	grunt.registerTask("lint", "Check for common code problems.", [ "jshint" ]);
 	grunt.registerTask("style", "Check for style conformity.", [ "jscs" ]);
 	grunt.registerTask("default", [ "clean", "lint", "style", "test" ]);
