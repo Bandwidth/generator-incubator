@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 	var allFiles    = sourceFiles.concat(testFiles);
 
 	var defaultJsHintOptions = grunt.file.readJSON("./.jshint.json");
-	var testJsHintOptions = _.extend(
+	var testJsHintOptions = _.defaults(
 		grunt.file.readJSON("./test/.jshint.json"),
 		defaultJsHintOptions
 	);
