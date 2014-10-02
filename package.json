@@ -1,6 +1,6 @@
 {
   "name": "generator-incubator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yeoman generator for Bandwidth Incubator projects.",
   "license": "MIT",
   "main": "app/index.js",
@@ -31,17 +31,17 @@
     "q": "^1.0.1",
     "rimraf": "^2.2.8",
     "shelljs": "^0.3.0",
-    "yeoman-generator": "~0.16.0"
+    "yeoman-generator": "^0.17.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-jscs": "^0.6.1",
-    "grunt-mocha-istanbul": "^1.4.1",
+    "grunt-jscs": "^0.7.1",
+    "grunt-mocha-istanbul": "^2.1.0",
     "js-yaml": "^3.0.2",
     "sinon": "^1.10.2"
   },
